@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 
-// Assuming `props` has `artist` and `song` properties
-export default function Lyrics({ artist, song }) {
-  const [lyrics, setLyrics] = useState({ title: "" });
-  const [loading, setLoading] = useState(true);
+type LyricsProps = {
+  artist: string;
+  song: string;
+};
+
+export default function Lyrics({ artist, song }: LyricsProps) {
+  const [lyrics, setLyrics] = useState<{ title: string; lyrics: string }>({
+    title: "",
+    lyrics: "",
+  });
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Define the async function inside useEffect
@@ -19,17 +26,20 @@ export default function Lyrics({ artist, song }) {
       } catch (error) {
         setLoading(false);
         console.error("Failed to fetch lyrics:", error);
-        setLyrics({ title: "Error fetching lyrics" }); // Handle errors
+        setLyrics({
+          title: "Error fetching lyrics",
+          lyrics: "Error fetching lyrics",
+        });
       }
     };
 
     fetchLyrics(); // Call the async function
   }, [artist, song]); // Dependency array to re-run useEffect when `artist` or `song` changes
-  if (lyrics.lyrics && !loading) {
+  if (lyrics.title && !loading) {
     return (
       <div className="bg-background rounded p-4 mb-80">
         <div className="text-center">
-          {lyrics.lyrics && (
+          {lyrics.title && (
             <div className="whitespace-pre">{lyrics.lyrics}</div>
           )}
         </div>

@@ -1,15 +1,24 @@
 import Image from "next/image";
-export default function MusicPlayer(props: string) {
+
+type MusicPlayerProps = {
+  albumArt: string;
+  song: string;
+  artist: string;
+  albumName: string;
+};
+
+export default function MusicPlayer(props: MusicPlayerProps) {
   console.log(props);
   return (
     <div className="bg-background rounded p-4">
       <div className="flex justify-center mb-2">
         <Image
-          src={props.albumArt}
+          src={props.albumArt as string}
           alt="DOA"
           width={300}
           height={300}
           className="rounded hover:scale-105 duration-300"
+          loading="lazy"
         />
       </div>
       <div className="text-center">

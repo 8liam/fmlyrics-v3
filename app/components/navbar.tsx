@@ -3,7 +3,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Dropdown from "./dropdown";
-function AuthButton() {}
+
 export default function Navbar() {
   const { data: session } = useSession();
   const [song, setPlaying] = useState([]);
@@ -40,7 +40,7 @@ export default function Navbar() {
     f();
   }, [session]);
 
-  if (session?.user.name) {
+  if (session?.user?.name) {
     return (
       <>
         <nav className="bg-secondary flex items-center justify-between p-2 px-[25vw]">
@@ -48,8 +48,8 @@ export default function Navbar() {
 
           <div className="text-right">
             <Dropdown
-              image={session?.user?.image}
-              user={session?.user?.name}
+              image={session?.user?.image ?? ""}
+              user={session?.user?.name ?? ""}
               signOut
             />
           </div>
@@ -57,7 +57,7 @@ export default function Navbar() {
       </>
     );
   }
-  if (!session || !session.user.name) {
+  if (!session || !session?.user?.name) {
     return (
       <nav className="bg-secondary flex items-center justify-between p-2 px-[25vw]">
         <div className="flex-grow text-center">

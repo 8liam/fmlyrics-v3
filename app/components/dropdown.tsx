@@ -3,7 +3,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import LogoutIcon from "@mui/icons-material/Logout";
-export default function Dropdown(props: any) {
+type DropdownProps = {
+  image: string;
+  user: string;
+  signOut: any;
+};
+export default function Dropdown(props: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const image = props.image;
   const name = props.user;

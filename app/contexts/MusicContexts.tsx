@@ -1,14 +1,20 @@
-"use client"
+"use client";
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import Navbar from "../components/navbar"; // Ensure Navbar is used if needed, else this import is unnecessary
-const MusicContext = createContext();
-
+const MusicContext = createContext<{
+  artist: string;
+  songTitle: string;
+  error: string;
+  message: string;
+  albumArt: string;
+  albumName: string;
+} | null>(null);
 export function useMusic() {
   return useContext(MusicContext);
 }
 
-export const MusicProvider = ({ children }) => {
+export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session } = useSession();
   const [artist, setArtist] = useState("");
   const [error, setError] = useState(""); // Ensure error state is used if needed
@@ -17,9 +23,12 @@ export const MusicProvider = ({ children }) => {
   const [albumArt, setAlbumArt] = useState("");
   const [albumName, setAlbumName] = useState("");
 
+  type session = {
+    accessToken: string;
+  };
   useEffect(() => {
     async function fetchMusic() {
-      if (session?.user.name) {
+      if (session && session.user?.name) {
         const response = await fetch(
           "https://api.spotify.com/v1/me/player/currently-playing",
           {
