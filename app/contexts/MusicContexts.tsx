@@ -22,13 +22,15 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   const [songTitle, setSongTitle] = useState("");
   const [albumArt, setAlbumArt] = useState("");
   const [albumName, setAlbumName] = useState("");
-
+  const [loading, setLoading] = useState(true);
   type session = {
     accessToken: string;
   };
+
   useEffect(() => {
+    // Function to fetch music data
     async function fetchMusic() {
-      if (session && session.user?.name) {
+      if (session && session.accessToken) {
         const response = await fetch(
           "https://api.spotify.com/v1/me/player/currently-playing",
           {
@@ -38,29 +40,28 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
           }
         );
         if (response.ok) {
-          try {
-            const data = await response.json();
-            if (data.item && data.is_playing === true) {
-              setArtist(data.item.artists[0].name);
-              setSongTitle(data.item.name);
-              setAlbumArt(data.item.album.images[0].url);
-              setAlbumName(data.item.album.name);
-            } else {
-              setMessage("No Music Is Playing");
-            }
-          } catch (error) {
-            console.error(error); // Log error for debugging
-            setMessage("Failed to fetch music data");
+          const data = await response.json();
+          if (data.item && data.is_playing) {
+            setArtist(data.item.artists[0].name);
+            setSongTitle(data.item.name);
+            setAlbumArt(data.item.album.images[0].url);
+            setAlbumName(data.item.album.name);
+          } else {
+            setMessage("No Music Is Playing");
           }
         } else {
           setMessage("No Music Is Playing");
         }
       }
+      setLoading(false); // Set loading to false after fetching
     }
 
-    if (session) {
+    // Delay the execution of fetchMusic
+    const timer = setTimeout(() => {
       fetchMusic();
-    }
+    }, 250); // Wait for 1.5 seconds
+
+    return () => clearTimeout(timer); // Cleanup timeout
   }, [session]); // Dependency array includes session to re-run effect when session changes
 
   return (
