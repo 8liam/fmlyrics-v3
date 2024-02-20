@@ -16,8 +16,13 @@ export default function Lyrics({ artist, song }: LyricsProps) {
     // Define the async function inside useEffect
     const fetchLyrics = async () => {
       try {
+        /*
         const response = await fetch(
           `/api/lyrics?artist=${artist}&title=${song}`
+        );
+        */
+        const response = await fetch(
+          `https://lyrist.vercel.app/api/${song}/${artist}`
         );
         console.log(loading);
         const data = await response.json();
@@ -40,7 +45,7 @@ export default function Lyrics({ artist, song }: LyricsProps) {
       <div className="bg-background rounded p-4 mb-80">
         <div className="text-center">
           {lyrics.title && (
-            <div className="whitespace-pre">{lyrics.lyrics}</div>
+            <div className="whitespace-pre text-wrap">{lyrics.lyrics}</div>
           )}
         </div>
       </div>

@@ -33,6 +33,8 @@ export default function Dropdown(props: DropdownProps) {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-36 bg-gray-800 shadow-md rounded-md py-1 z-50">
+          {/*
+          
           <a
             href="#"
             className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-right "
@@ -45,9 +47,10 @@ export default function Dropdown(props: DropdownProps) {
           >
             Link 2
           </a>
+          */}
           <a
             href="#"
-            className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-right  "
+            className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-center  "
             onClick={() => signOut()}
           >
             <LogoutIcon fontSize="small" color="error" /> Log Out
