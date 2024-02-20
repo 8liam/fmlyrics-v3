@@ -30,30 +30,34 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Function to fetch music data
     async function fetchMusic() {
-      if (session && session.accessToken) {
-        const response = await fetch(
-          "https://api.spotify.com/v1/me/player/currently-playing",
-          {
-            headers: {
-              Authorization: `Bearer ${session.accessToken}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          if (data.item && data.is_playing) {
-            setArtist(data.item.artists[0].name);
-            setSongTitle(data.item.name);
-            setAlbumArt(data.item.album.images[0].url);
-            setAlbumName(data.item.album.name);
+      try {
+        if (session && session.accessToken) {
+          const response = await fetch(
+            "https://api.spotify.com/v1/me/player/currently-playing",
+            {
+              headers: {
+                Authorization: `Bearer ${session.accessToken}`,
+              },
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (data.item && data.is_playing) {
+              setArtist(data.item.artists[0].name);
+              setSongTitle(data.item.name);
+              setAlbumArt(data.item.album.images[0].url);
+              setAlbumName(data.item.album.name);
+            } else {
+              setMessage("No Music Is Playing");
+            }
           } else {
             setMessage("No Music Is Playing");
           }
-        } else {
-          setMessage("No Music Is Playing");
         }
+        setLoading(false); // Set loading to false after fetching
+      } catch {
+        setLoading(false);
       }
-      setLoading(false); // Set loading to false after fetching
     }
 
     // Delay the execution of fetchMusic

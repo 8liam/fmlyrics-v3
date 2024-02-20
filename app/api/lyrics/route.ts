@@ -20,9 +20,8 @@ export async function GET(request: Request) {
       artist: `${artist}`,
       optimizeQuery: true,
     };
-    console.log(options.title);
+    
     const lyrics = await getSong(options);
-    console.log(lyrics.title);
     // Convert both strings to lowercase for a case-insensitive comparison
     const lyricsTitleLower = lyrics.title.toLowerCase();
     const optionsTitleLower = options.artist.toLowerCase();
