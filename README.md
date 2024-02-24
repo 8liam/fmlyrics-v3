@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1>FMLyrics</h1>
 
-## Getting Started
+<p>The third iteration of FMLyrics - a way of getting lyrics for your currently playing song through Spotify!</p>
 
-First, run the development server:
+<a href="https://fmlyrics.vercel.app">View on Web</a>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Showcase Banner](https://i.imgur.com/dxUw6PQ.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<h2>Features</h2>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<ul>
+	<li><strong>Sign in with Spotify:</strong> Direct integration to your spotify account using Spotify as a provider.</li>
+	<li><strong>Responsive UI:</strong> UI Optimised across various devices, allowing no hiccups in retrieving lyrics.</li>
+</ul>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<h2>Tech Stack</h2>
 
-## Learn More
+<h3>Frontend</h3>
 
-To learn more about Next.js, take a look at the following resources:
+<ul>
+	<li><strong>Language:</strong> TypeScript</li>
+	<li><strong>Framework:</strong> Next.js</li>
+	<li><strong>Styling:</strong> TailwindCSS</li>
+</ul>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<h3>To-do List</h3>
+<ul>
+  <li>[ ] Rebuild API for faster usage by users.</li>
+  <li>[ ] Allow for instant reload on song change.</li>
+  <li>[ ] Build out profile page to store music stats.</li>
+  <li>[ ] Make UI more friendly and appealing for users to have a better experience.</li>
+</ul>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<h2>Credits</h2>
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<p>Customdle is built and maintained solely by Liam Grant. Thanks to the developers of the libraries and frameworks used in this project.</p>
