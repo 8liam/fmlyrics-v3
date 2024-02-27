@@ -8,7 +8,6 @@ type MusicPlayerProps = {
 };
 
 export default function MusicPlayer(props: MusicPlayerProps) {
-  console.log(props);
   return (
     <>
       <div className="bg-background rounded p-4 sm:hidden block">

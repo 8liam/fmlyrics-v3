@@ -24,7 +24,6 @@ export default function Lyrics({ artist, song }: LyricsProps) {
         const response = await fetch(
           `https://lyrist.vercel.app/api/${song}/${artist}`
         );
-        console.log(loading);
         const data = await response.json();
         setLyrics(data); // Update state with fetched data
         setLoading(false);

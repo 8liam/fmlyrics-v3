@@ -6,7 +6,6 @@ import Navbar from "./components/navbar";
 import Content from "./pages/content";
 export default function Home() {
   const { data: session } = useSession();
-  console.log(session);
   return (
     <>
       <Navbar />
