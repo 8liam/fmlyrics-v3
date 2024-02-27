@@ -19,8 +19,13 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account }) {
       if (account) {
         token.id = account.id;
-        token.expires_at = account.expires_at;
+        token.expires_at = account.expires_at; // This line might be redundant if you're setting exp explicitly
         token.accessToken = account.access_token;
+
+        // Set the token to expire in 30 days
+        const THIRTY_DAYS_IN_SECONDS = 30 * 24 * 60 * 60;
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+        token.exp = currentTimeInSeconds + THIRTY_DAYS_IN_SECONDS;
       }
       return token;
     },
@@ -30,7 +35,5 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  pages: {
-    signIn: "/login",
-  },
 };
+
