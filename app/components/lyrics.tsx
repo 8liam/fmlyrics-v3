@@ -16,14 +16,15 @@ export default function Lyrics({ artist, song }: LyricsProps) {
     // Define the async function inside useEffect
     const fetchLyrics = async () => {
       try {
-        /*
         const response = await fetch(
           `/api/lyrics?artist=${artist}&title=${song}`
         );
-        */
-        const response = await fetch(
-          `https://lyrist.vercel.app/api/${song}/${artist}`
-        );
+
+        /*
+      const response = await fetch(
+        `/api/${song}/${artist}`
+      );
+      */
         const data = await response.json();
         setLyrics(data); // Update state with fetched data
         setLoading(false);
