@@ -84,11 +84,13 @@ function MusicInfo() {
         </div>
       </>
     );
-  } else {
+  } else if (session) {
     return (
-      <div className="mt-4 space-y-4 mb-8 text-center">
+      <div className="mt-4 space-y-12 mb-8 text-center">
         <div className="space-y-4">
-          <h1 className="text-6xl font-semibold">Loading</h1>
+          <h1 className="text-6xl font-semibold">
+            Start Playing Music to Get Started.
+          </h1>
         </div>
       </div>
     );
