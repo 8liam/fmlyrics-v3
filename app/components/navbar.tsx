@@ -5,40 +5,10 @@ import Image from "next/image";
 import Dropdown from "./dropdown";
 
 export default function Navbar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [song, setPlaying] = useState([]);
   const [name, setTrackName] = useState("");
   const [artist, setArtist] = useState("");
-
-  useEffect(() => {
-    async function f() {
-      if (session && session.accessToken) {
-        const response = await fetch(
-          "https://api.spotify.com/v1/me/player/currently-playing",
-          {
-            headers: {
-              Authorization: `Bearer ${session.accessToken}`,
-            },
-          }
-        );
-        if (response.ok) {
-          try {
-            const data = await response.json();
-            setArtist(data.item.artists[0].name);
-            setTrackName(data.item.name);
-          } catch (error) {
-            const data = {};
-            if (data === null) {
-              return;
-            }
-          }
-        } else {
-          console.error("Failed to fetch data");
-        }
-      }
-    }
-    f();
-  }, [session]);
 
   if (session?.user?.name) {
     return (

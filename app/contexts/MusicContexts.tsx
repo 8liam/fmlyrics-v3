@@ -15,7 +15,7 @@ export function useMusic() {
 }
 
 export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [artist, setArtist] = useState("");
   const [error, setError] = useState(""); // Ensure error state is used if needed
   const [message, setMessage] = useState("");
@@ -66,7 +66,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     }, 250); // Wait for 1.5 seconds
 
     return () => clearTimeout(timer); // Cleanup timeout
-  }, [session]); // Dependency array includes session to re-run effect when session changes
+  }, [session, status]); // Dependency array includes session to re-run effect when session changes
 
   return (
     <MusicContext.Provider
