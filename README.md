@@ -25,10 +25,17 @@
 
 <h3>To-do List</h3>
 <ul>
-  <li>[ ] Rebuild API for faster usage by users.</li>
+  <li>[X] Rebuild API for faster usage by users.</li>
   <li>[ ] Allow for instant reload on song change.</li>
   <li>[ ] Build out profile page to store music stats.</li>
   <li>[ ] Make UI more friendly and appealing for users to have a better experience.</li>
+</ul>
+
+<h3>Bugs to Fix</h3>
+<ul>
+	<li>[ ] Song reload not working at all for some browsers.</li>
+	<li>[ ] Song not reloading until page is tabbed back in.</li>
+	<li>[ ] Token expiring but not signing users out.</li>
 </ul>
 
 <h2>Credits</h2>
