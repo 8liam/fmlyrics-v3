@@ -40,4 +40,4 @@
 
 <h2>Credits</h2>
 
-<p>Customdle is built and maintained solely by Liam Grant. Thanks to the developers of the libraries and frameworks used in this project.</p>
+<p>FMLyrics is built and maintained solely by Liam Grant. Thanks to the developers of the libraries and frameworks used in this project.</p>
