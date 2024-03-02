@@ -10,7 +10,7 @@ type MusicPlayerProps = {
 export default function MusicPlayer(props: MusicPlayerProps) {
   return (
     <>
-      <div className="bg-background rounded p-4 sm:hidden block">
+      <div className="bg-primary rounded p-4 sm:hidden block">
         <div className="flex justify-center mb-2">
           <div className="flex gap-4 w-full justify-center">
             <Image
@@ -29,7 +29,7 @@ export default function MusicPlayer(props: MusicPlayerProps) {
           </div>
         </div>
       </div>
-      <div className="bg-background rounded p-4 sm:block hidden">
+      <div className="bg-primary rounded p-4 sm:block hidden">
         <div className="flex justify-center mb-2">
           <Image
             src={props.albumArt as string}
