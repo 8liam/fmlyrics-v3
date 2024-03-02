@@ -42,7 +42,7 @@ export default function Lyrics({ artist, song }: LyricsProps) {
   }, [artist, song]); // Dependency array to re-run useEffect when `artist` or `song` changes
   if (lyrics.title && !loading) {
     return (
-      <div className="bg-background rounded p-4 mb-80">
+      <div className="bg-primary rounded p-4 mb-80">
         <div className="text-center">
           {lyrics.title && (
             <div className="whitespace-pre text-wrap">{lyrics.lyrics}</div>
@@ -53,7 +53,7 @@ export default function Lyrics({ artist, song }: LyricsProps) {
   }
   if (loading) {
     return (
-      <div className="bg-background rounded p-4 mb-80 animate-pulse">
+      <div className="bg-primary rounded p-4 mb-80 animate-pulse">
         <div className="text-center animate-pulse ">
           <div className="whitespace-pre"></div>
         </div>

@@ -31,7 +31,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     // Function to fetch music data
     async function fetchMusic() {
       try {
-        if (session && session.accessToken) {
+        if (status === "authenticated") {
           const response = await fetch(
             "https://api.spotify.com/v1/me/player/currently-playing",
             {

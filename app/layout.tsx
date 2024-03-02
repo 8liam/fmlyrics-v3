@@ -21,12 +21,14 @@ export default async function RootLayout({
   const session = await getServerSession();
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <SessionProvider session={session}>
-          <MusicProvider>{children}</MusicProvider>
-        </SessionProvider>
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <MusicProvider>
+        <html lang="en" className="bg-background">
+          <body className={inter.className}>
+            {children}
+          </body>
+        </html>
+      </MusicProvider>
+    </SessionProvider >
   );
 }

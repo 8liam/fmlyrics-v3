@@ -17,7 +17,7 @@ export default function Dropdown(props: DropdownProps) {
       {/* Button to toggle dropdown */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 p-1 bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center"
+        className="px-4 p-1 bg-accent text-white rounded-md focus:outline-none focus:ring-2 focus:bg-accent/50 focus:ring-opacity-50 flex items-center"
       >
         <p className="pr-2 font-semibold">{name} </p>
 
@@ -33,14 +33,14 @@ export default function Dropdown(props: DropdownProps) {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-36 bg-gray-800 shadow-md rounded-md py-1 z-50">
-          {/*
-          
+
           <a
-            href="#"
+            href={`/profile`}
             className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-right "
           >
-            Link 1
+            Profile
           </a>
+          {/*
           <a
             href="#"
             className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-right "
@@ -50,7 +50,7 @@ export default function Dropdown(props: DropdownProps) {
           */}
           <a
             href="#"
-            className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-center  "
+            className="block px-4 py-2 text-sm text-white hover:bg-gray-100 duration-300 hover:text-black text-right  "
             onClick={() => signOut()}
           >
             <LogoutIcon fontSize="small" color="error" /> Log Out
