@@ -2,8 +2,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useSession, getSession } from "next-auth/react";
 
-
-
 const MusicContext = createContext<{
   artist: string;
   songTitle: string;
@@ -25,41 +23,47 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   const [songTitle, setSongTitle] = useState("");
   const [albumArt, setAlbumArt] = useState("");
   const [albumName, setAlbumName] = useState("");
-  const [loading, setLoading] = useState(true);
-
 
   async function fetchMusic() {
-    try {
+    if (status !== "authenticated" || !session?.accessToken) {
+      console.log("Session not ready or authenticated.");
+      return
+    }
 
-      if (status === "authenticated" && session.accessToken) {
-        const response = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-          headers: {
-            Authorization: `Bearer ${session.accessToken}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.item && data.is_playing) {
-            setArtist(data.item.artists[0].name);
-            setSongTitle(data.item.name);
-            setAlbumArt(data.item.album.images[0].url);
-            setAlbumName(data.item.album.name);
-          } else {
-            setMessage("No Music Is Playing");
-          }
+    try {
+      const response = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.item && data.is_playing) {
+          setArtist(data.item.artists[0].name);
+          setSongTitle(data.item.name);
+          setAlbumArt(data.item.album.images[0].url);
+          setAlbumName(data.item.album.name);
         } else {
           setMessage("No Music Is Playing");
         }
+      } else {
+        setMessage("No Music Is Playing");
       }
-      setLoading(false);
-    } catch {
+    } catch (error) {
       setError("An error occurred while fetching music data.");
-      setLoading(false);
+      console.error(error);
     }
   }
 
   useEffect(() => {
-    fetchMusic();
+    const checkSessionAndFetchMusic = async () => {
+      const currentSession = await getSession();
+      if (currentSession) {
+        fetchMusic();
+      }
+    };
+
+    checkSessionAndFetchMusic();
 
     const handleFocus = () => {
       fetchMusic();
@@ -70,19 +74,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       window.removeEventListener('focus', handleFocus);
     };
-  }, [session, status, loading]);
-
-  useEffect(() => {
-    async function checkSessionAndFetchMusic() {
-      const session = await getSession(); // Force check session
-      if (session) {
-        // If session exists, proceed to fetch music data
-        fetchMusic();
-      }
-    }
-
-    checkSessionAndFetchMusic();
-  }, [status]); // You might adjust this based on your needs
+  }, [status, session]); // Removed 'loading' from dependencies
 
   return (
     <MusicContext.Provider value={{ artist, songTitle, error, message, albumArt, albumName }}>
