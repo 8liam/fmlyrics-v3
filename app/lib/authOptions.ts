@@ -16,22 +16,40 @@ const params = {
 const LOGIN_URL = "https://accounts.spotify.com/authorize?" + new URLSearchParams(params).toString();
 
 async function refreshAccessToken(token: any) {
-  const params = new URLSearchParams()
-  params.append("grant_type", "refresh_token")
-  params.append("refresh_token", token.refreshToken)
-  const response = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_SECRET).toString('base64'))
-    },
-    body: params
-  })
-  const data = await response.json()
-  return {
-    ...token,
-    accessToken: data.access_token,
-    refreshToken: data.refresh_token ?? token.refreshToken,
-    accessTokenExpires: Date.now() + data.expires_in * 1000
+  try {
+    const url = 'https://accounts.spotify.com/api/token';
+    const params = new URLSearchParams();
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', token.refreshToken);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64'),
+      },
+      body: params,
+    });
+
+    const refreshTokenData = await response.json();
+
+    if (!response.ok) {
+      throw refreshTokenData;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshTokenData.access_token,
+      accessTokenExpires: Date.now() + refreshTokenData.expires_in * 1000, // we are adding expiry time
+      refreshToken: refreshTokenData.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+    };
+  } catch (error) {
+    console.error('RefreshAccessTokenError', error);
+
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
   }
 }
 
@@ -47,26 +65,27 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.JWT_SECRET,
   callbacks: {
     async jwt({ token, account }) {
-      // Persist the OAuth access_token to the token right after signin
-      if (account) {
-        token.accessToken = account.access_token
-        token.refreshToken = account.refresh_token
-        token.accessTokenExpires = account.expires_at
-        return token
-      }
-      // access token has not expired
-      if (token.accessTokenExpires && Date.now() < Number(token.accessTokenExpires) * 1000) {
-        return token
+      // Initial sign in
+      if (account && account.access_token) {
+        return {
+          accessToken: account.access_token,
+          accessTokenExpires: Date.now() + Number(account.expires_in) * 1000,
+          refreshToken: account.refresh_token,
+        };
       }
 
-      // access token has expired
-      return await refreshAccessToken(token)
+      // Return previous token if it's still valid
+      if (Date.now() < Number(token.accessTokenExpires)) {
+        return token;
+      }
+
+      // Access token has expired, try to update it
+      return await refreshAccessToken(token);
     },
-    async session({ session, token, user }) {
-      // Send properties to the client, like an access_token from a provider.
-      session.accessToken = token.accessToken
-      return session
-    }
+    async session({ session, token }) {
+      session.accessToken = token.accessToken; // Pass any token error to the session
+      return session;
+    },
   }
 }
 
