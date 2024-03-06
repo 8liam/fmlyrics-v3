@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 
 export default function Profile() {
     const { data, status } = useSession();
-    console.log(data);
     return (
         <>
             <Navbar />
