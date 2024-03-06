@@ -64,14 +64,17 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.JWT_SECRET,
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ user, token, account }) {
       // Initial sign in
       if (account && account.access_token) {
-        return {
-          accessToken: account.access_token,
-          accessTokenExpires: Date.now() + Number(account.expires_in) * 1000,
-          refreshToken: account.refresh_token,
-        };
+        token.accessToken = account.access_token;
+        token.accessTokenExpires = Date.now() + Number(account.expires_in) * 1000;
+        token.refreshToken = account.refresh_token;
+        // Persist user information in the token
+        if (user) {
+          token.user = user;
+        }
+        return token;
       }
 
       // Return previous token if it's still valid
@@ -83,9 +86,13 @@ export const authOptions: NextAuthOptions = {
       return await refreshAccessToken(token);
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken; // Pass any token error to the session
+      session.accessToken = token.accessToken;
+      // Add user information to the session
+      if (token.user) {
+        session.user = token.user; // Ensure this matches your user object structure
+      }
       return session;
-    },
+    }
   }
 }
 
