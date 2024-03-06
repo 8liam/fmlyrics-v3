@@ -1,6 +1,8 @@
 "use client";
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
+
+
 
 const MusicContext = createContext<{
   artist: string;
@@ -24,6 +26,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   const [albumArt, setAlbumArt] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [loading, setLoading] = useState(true);
+
 
   async function fetchMusic() {
     try {
@@ -67,6 +70,19 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
       window.removeEventListener('focus', handleFocus);
     };
   }, [session, status, loading]);
+
+  useEffect(() => {
+    async function checkSessionAndFetchMusic() {
+      const session = await getSession(); // Force check session
+      if (session) {
+        // If session exists, proceed to fetch music data
+        fetchMusic();
+      }
+    }
+
+    checkSessionAndFetchMusic();
+  }, [status]); // You might adjust this based on your needs
+
   return (
     <MusicContext.Provider value={{ artist, songTitle, error, message, albumArt, albumName }}>
       {children}
